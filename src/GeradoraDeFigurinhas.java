@@ -22,6 +22,7 @@ public class GeradoraDeFigurinhas {
     // criar nova imagem em memória com transparência e com tamanho novo
     int largura = imagemOriginal.getWidth();
     int altura = imagemOriginal.getHeight();
+
     int novaAltura = altura + 200;
 
     BufferedImage novaImagem = new BufferedImage(largura, novaAltura, BufferedImage.TRANSLUCENT);
@@ -40,7 +41,8 @@ public class GeradoraDeFigurinhas {
     graphics.drawString("10/10", 100, novaAltura - 100);
 
     // escrever a nova imagem em um arquivo
-    ImageIO.write(novaImagem, "png", new File(nomeArquivo));
+    var saida = "saida/" + nomeArquivo;
+    ImageIO.write(novaImagem, "png", new File(saida));
   }
 
 }
