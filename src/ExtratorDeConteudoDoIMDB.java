@@ -15,7 +15,6 @@ public class ExtratorDeConteudoDoIMDB implements ExtratorDeConteudo {
 
       String titulo = atributos.get("title");
       String urlImagem = atributos.get("image").replaceAll("(@+)(.*).jpg$", "$1.jpg");
-
       Conteudo conteudo = new Conteudo(titulo, urlImagem);
 
       conteudos.add(conteudo);

@@ -5,7 +5,7 @@ import java.util.List;
 public class App {
     public static void main(String[] args) throws Exception {
         // create HTTP connection and search the top 250 movies
-        String urlIMDB = "https://imdb-api.com/en/API/Top250Movies/k_zmuid1iv";
+        String urlIMDB = "https://imdb-api.com/en/API/Top250Movies/k_44gfwthm";
 
         var http = new ClienteHttp();
         String json = http.buscaDados(urlIMDB);
@@ -18,7 +18,7 @@ public class App {
         // show data info for each movie
         var geradora = new GeradoraDeFigurinhas();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < conteudos.size() - 1; i++) {
 
             Conteudo conteudo = conteudos.get(i);
 
@@ -27,9 +27,13 @@ public class App {
             // windows não aceita título com :
             // String nomeArquivo = conteudo.getTitulo().replace(":", "-") + ".png";
 
-            String nomeArquivo = conteudo.getTitulo();
+            String nomeArquivo = conteudo.getTitulo().replace(":", "-") + ".png";
 
-            geradora.cria(inputStream, nomeArquivo);
+            try {
+                geradora.cria(inputStream, nomeArquivo);
+            } catch (javax.imageio.IIOException err) {
+                System.out.println("Formato inválido de imagem");
+            }
 
             System.out.println(conteudo.getTitulo());
             System.out.println();
