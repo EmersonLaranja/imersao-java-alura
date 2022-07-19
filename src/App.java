@@ -80,7 +80,7 @@ public class App {
 
         // String estrelinhas = "";
         // for (int j = 1; j <= numeroEstrelinhas; j++) {
-        // estrelinhas += "";
+        // estrelinhas += "⭐";
         // }
         // System.out.println(estrelinhas);
         // }
