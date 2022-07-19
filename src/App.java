@@ -1,37 +1,35 @@
-import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) throws Exception {
         // create HTTP connection and search the top 250 movies
-        String urlIMDB = "https://imdb-api.com/en/API/Top250Movies/k_zmuid1iv";
+        System.out.println("OI");
+        String url = "https://imdb-api.com/en/API/Top250Movies/k_zmuid1iv";
 
-        var http = new ClienteHttp();
-        String json = http.buscaDados(urlIMDB);
+        URI address = URI.create(url);
 
-        // exibir e manipular os dados
-        // ExtratorDeConteudo extrator = new ExtratorDeConteudoDaNasa();
-        ExtratorDeConteudo extrator = new ExtratorDeConteudoDoIMDB();
-        List<Conteudo> conteudos = extrator.extraiConteudos(json);
+        var client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder(address).GET().build();
+
+        HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+        String body = response.body();
+
+        // parsing String to List Map
+        var parser = new JsonParser();
+        List<Map<String, String>> listaDeFilmes = parser.parse(body);
 
         // show data info for each movie
-        var geradora = new GeradoraDeFigurinhas();
-
-        for (int i = 0; i < 3; i++) {
-
-            Conteudo conteudo = conteudos.get(i);
-
-            InputStream inputStream = new URL(conteudo.getUrlImagem()).openStream();
-
-            // windows não aceita título com :
-            // String nomeArquivo = conteudo.getTitulo().replace(":", "-") + ".png";
-
-            String nomeArquivo = conteudo.getTitulo();
-
-            geradora.cria(inputStream, nomeArquivo);
-
-            System.out.println(conteudo.getTitulo());
+        for (Map<String, String> filme : listaDeFilmes) {
+            System.out.println(filme.get("title"));
+            System.out.println(filme.get("image"));
+            System.out.println(filme.get("imDbRating"));
             System.out.println();
         }
 
@@ -55,25 +53,24 @@ public class App {
         // parser = new JsonParser();
         // List<Map<String, String>> listaDosFilmesMaisPopulares = parser.parse(body);
 
-        // for (Map<String, String> conteudo : listaDosFilmesMaisPopulares) {
-        // System.out.println(conteudo.get("title"));
-        // System.out.println(conteudo.get("image"));
-        // System.out.println(conteudo.get("imDbRating"));
+        // for (Map<String, String> filme : listaDosFilmesMaisPopulares) {
+        // System.out.println(filme.get("title"));
+        // System.out.println(filme.get("image"));
+        // System.out.println(filme.get("imDbRating"));
         // System.out.println();
         // }
 
         /*
          * 2º desafio: Usar sua criatividade para deixar a saída dos dados mais
          * bonitinha: usar
-         * emojis com código UTF-8, mostrar a nota do conteudo como estrelinhas, decorar
-         * o
+         * emojis com código UTF-8, mostrar a nota do filme como estrelinhas, decorar o
          * terminal com cores, negrito e itálico usando códigos ANSI, e mais!
          */
         // for (int i = 0; i < 10; i++) {
-        // Map<String, String> conteudo = listaDeFilmes.get(i);
-        // String titulo = conteudo.get("title");
-        // String urlImagem = conteudo.get("image");
-        // String classificacao = conteudo.get("imDbRating");
+        // Map<String, String> filme = listaDeFilmes.get(i);
+        // String titulo = filme.get("title");
+        // String urlImagem = filme.get("image");
+        // String classificacao = filme.get("imDbRating");
 
         // System.out.println("Título: \033[0;1m" + titulo + "\033[0;0m");
         // System.out.println("Poster: \033[0;1m" + urlImagem + "\033[0;0m");
@@ -101,8 +98,7 @@ public class App {
          */
 
         /*
-         * Desafio supremo: criar alguma maneira para você dar uma avaliação ao
-         * conteudo,
+         * Desafio supremo: criar alguma maneira para você dar uma avaliação ao filme,
          * puxando de algum arquivo de configuração OU pedindo a avaliação para o
          * usuário digitar no terminal.
          */
