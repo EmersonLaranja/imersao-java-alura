@@ -44,4 +44,5 @@ public class GeradoraDeFigurinhas {
     var saida = "saida/" + nomeArquivo;
     ImageIO.write(novaImagem, "png", new File(saida));
   }
+
 }
