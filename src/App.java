@@ -11,7 +11,7 @@ import java.util.Map;
 public class App {
     public static void main(String[] args) throws Exception {
         // create HTTP connection and search the top 250 movies
-        String url = "https://imdb-api.com/en/API/Top250Movies/k_44gfwthm";
+        String url = "https://api.mocki.io/v2/549a5d8b/MostPopularMovies";
 
         URI address = URI.create(url);
 
