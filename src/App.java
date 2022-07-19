@@ -11,7 +11,7 @@ import java.util.Map;
 public class App {
     public static void main(String[] args) throws Exception {
         // create HTTP connection and search the top 250 movies
-        String url = "https://imdb-api.com/en/API/Top250Movies/k_zmuid1iv";
+        String url = "https://imdb-api.com/en/API/Top250Movies/k_44gfwthm";
 
         URI address = URI.create(url);
 
@@ -34,9 +34,15 @@ public class App {
             String titulo = filme.get("title");
 
             InputStream inputStream = new URL(urlImagem).openStream();
-            String nomeArquivo = titulo + ".png";
 
-            geradora.cria(inputStream, nomeArquivo);
+            // windows não aceita título com :
+            String nomeArquivo = titulo.replace(":", "-") + ".png";
+
+            try {
+                geradora.cria(inputStream, nomeArquivo);
+            } catch (javax.imageio.IIOException err) {
+                System.out.println("Formato inválido de imagem");
+            }
 
             System.out.println(titulo);
             System.out.println();
